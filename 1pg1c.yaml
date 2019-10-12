@@ -1,0 +1,16 @@
+---
+#
+- hosts: servers1c
+  remote_user: root
+
+  tasks:
+
+      - name: Set password
+        become: yes
+        become_user: postgres
+        become_method: su
+        become_flags: '-l'
+        command: psql -c "alter user postgres with password 'pgnew';"
+
+...
+
