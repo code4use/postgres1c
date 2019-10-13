@@ -38,7 +38,7 @@
                 src: ./rpms
                 dest: /tmp/
 
-      - name: Install 1c server rpms
+      - name: Install 1c postgresql-10 rpms
         shell: yum localinstall -y *rpm
         args:
             chdir: /tmp/rpms
@@ -47,7 +47,19 @@
       - name: Create PG cluster 
         shell: /usr/pgsql-10/bin/postgresql-10-setup initdb
 
-      - name: postgresql-10 start
+      - name: Config edit 
+        become: yes
+        become_user: postgres
+        become_method: su
+        become_flags: '-l'
+        replace:
+            path: 10/data/pg_hba.conf
+            backup: yes
+            before: 'local\s+replication'
+            regexp: 'ident'
+            replace: 'md5'
+
+      - name: postgresql-10 restart
         service:
             name: postgresql-10
             enabled: yes
