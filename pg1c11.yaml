@@ -36,7 +36,7 @@
 
       - name: Copy srv1c rpm files
         copy:
-                src: ./rpms
+                src: ./rpms11
                 dest: /tmp/
 
       - name: Install 1c postgresql-11 rpms
